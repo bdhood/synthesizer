@@ -216,7 +216,7 @@ public:
 
 };
 
-#if WINVER < 0x0501
+#if FALSE
 
 /* The standard InterlockedXXX functions won't take volatiles */
 static inline LONG InterlockedIncrement( volatile LONG * plong )

@@ -115,7 +115,7 @@
 #include "asiosys.h"
 #include "asio.h"
 #include "asiodrivers.h"
-#include "iasiothiscallresolver.h"
+//#include "iasiothiscallresolver.h"
 
 /*
 #if MAC
