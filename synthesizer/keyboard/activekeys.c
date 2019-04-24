@@ -1,7 +1,10 @@
 #include <string.h>
 #include <stdio.h>
+#include <stdbool.h>
 
-#define SIZE 0x100
+#include "note.h"
+
+#define SIZE 0x200
 
 char active_keys[SIZE];
 
@@ -9,15 +12,15 @@ void activekeys_load() {
 	memset(active_keys, 0, SIZE);
 }
 
-void activekeys_add(unsigned char vkcode) {
-	active_keys[vkcode & 0xff] = 1;
+void activekeys_add(int vkcode) {
+	active_keys[vkcode] = 1;
 }
 
-void activekeys_rm(unsigned char vkcode) {
-	active_keys[vkcode & 0xff] = 0;
+void activekeys_rm(int vkcode) {
+	active_keys[vkcode] = 0;
 }
 
-unsigned char activekeys_next(unsigned char vkcode) {
+int activekeys_next(int vkcode) {
 	for (int i = vkcode + 1; i < sizeof(active_keys); i++) {
 		if (active_keys[i] == 1) {
 			return i;
@@ -26,7 +29,7 @@ unsigned char activekeys_next(unsigned char vkcode) {
 	return 0;
 }
 
-unsigned char activekeys_first() {
+int activekeys_first() {
 	return activekeys_next(0);
 }
 

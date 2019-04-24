@@ -2,7 +2,7 @@
 #define NOTE_H
 
 typedef struct NOTE {
-	char note;
+	int note;
 	char sharp;
 	char octave;
 } NOTE;

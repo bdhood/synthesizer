@@ -15,7 +15,7 @@ enum BUTTON_STATE {
 	HOVER = 1,
 	DOWN = 2
 };
-
+void button_init();
 void button_mouse(HDC hdc, BUTTON *button, BUTTON_STATE state);
 void button_paint(HDC hdc, BUTTON *button);
 

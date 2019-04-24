@@ -2,10 +2,10 @@
 #define ACTIVEKEYS_H
 
 void activekeys_load();
-void activekeys_add(unsigned char vkcode);
-void activekeys_rm(unsigned char vkcode);
-unsigned char activekeys_next(unsigned char vkcode);
-unsigned char activekeys_first();
+void activekeys_add(int vkcode);
+void activekeys_rm(int vkcode);
+int activekeys_next(int vkcode);
+int activekeys_first();
 int activekeys_get_total();
 
 #endif
