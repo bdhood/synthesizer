@@ -1,6 +1,7 @@
 #include <Windows.h>
 #include <stdio.h>
 #include <math.h>
+#include <stdbool.h>
 
 #include "keyboard.h"
 #include "waveform.h"
@@ -10,6 +11,7 @@
 #include "activekeys.h"
 #include "synth.h"
 #include "note.h"
+#include "button.h"
 
 #define WIDTH	990
 #define HEIGHT  465
@@ -86,12 +88,20 @@ void ky_ctrl(HDC hdc) {
 				}
 
 
-				for (unsigned char c = activekeys_first(); c != 0; c = activekeys_next(c)) {
-					if ((unsigned char)keys_mapped[i][j] == c) {
+				for (int c = activekeys_first(); c != 0; c = activekeys_next(c)) {
+					bool space_note = false;
+					if (c > 0x100) {
+						space_note = true;
+						c -= 0x100;
+					}
+					
+					if ((int)keys_mapped[i][j] == c) {
 						SetBkColor(hdc, active_color);
 						FillRect(hdc, &r, active);
 						break;
 					}
+					if (space_note)
+						c += 0x100;
 				}
 
 
@@ -220,7 +230,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-DWORD WINAPI interface_load(LPVOID lpParam)
+DWORD WINAPI interface_start(LPVOID lpParam)
 {
 	WNDCLASSEX wc;
 	MSG Msg;
@@ -254,6 +264,8 @@ DWORD WINAPI interface_load(LPVOID lpParam)
 	hFont = CreateFont(15, 0, 0, 0, FW_DONTCARE, 0, 0, 0, 0, 0,
 		CLIP_DEFAULT_PRECIS, ANTIALIASED_QUALITY, VARIABLE_PITCH, TEXT("verdana"));
 
+	button_init();
+
 	ShowWindow(hwnd, SW_SHOW);
 	UpdateWindow(hwnd);
 
@@ -262,5 +274,6 @@ DWORD WINAPI interface_load(LPVOID lpParam)
 		TranslateMessage(&Msg);
 		DispatchMessage(&Msg);
 	}
+
 	return Msg.wParam;
 }

@@ -28,11 +28,10 @@ void saw_callback(unsigned long framesPerBuffer, int sampleRate, int nChannels, 
 	NOTE *n;
 	NOTE n2;
 	NOTE n3;
-	bool flip = 0;
 	bool flip2 = 0;
 	int voice = 0;
 	float *outputBuffer = out;
-	int nNotes = activenotes_get_total() * 1;
+	int nNotes = activenotes_get_total() * 2;
 	int index = 0;
 	n3.note = 'a';
 	n3.octave = 0;
@@ -45,17 +44,12 @@ void saw_callback(unsigned long framesPerBuffer, int sampleRate, int nChannels, 
 		if (n->note == 0)
 			continue;
 
-		flip = 1;
-
-		for (int k = 0; k < 1; k++) {
+		for (int k = 0; k < 2; k++) {
 			n2.note = n->note;
 			n2.octave = n->octave + k;
 			n2.sharp = n->sharp;
 			float freq = freqmap_get(&n2);
-			if ((index >= nNotes / 2) && flip2 == 0) {
-				flip2 = 1;
-				printf("\t\t\t\t");
-			}
+
 			if (n2.sharp == 0) {
 				printf("%c%d ", n2.note, n2.octave);
 			}
@@ -70,14 +64,16 @@ void saw_callback(unsigned long framesPerBuffer, int sampleRate, int nChannels, 
 					saw_voice_locations[voice] -= 2.0f;
 				}
 
+	
 				if (index < nNotes / 2) {
-					out[(i * nChannels)] += 0.30f * saw_voice_locations[voice];
+					//out[(i * nChannels)] += 0.30f * saw_voice_locations[voice];
 					out[(i * nChannels) + 1] += saw_voice_locations[voice];
 				}
 				else if (index >= nNotes / 2) {
 					out[(i * nChannels)] += saw_voice_locations[voice];
-					out[(i * nChannels) + 1] += 0.30f * saw_voice_locations[voice];
+					///out[(i * nChannels) + 1] += 0.30f * saw_voice_locations[voice];
 				}
+
 
 			}
 			voice++;
@@ -86,7 +82,6 @@ void saw_callback(unsigned long framesPerBuffer, int sampleRate, int nChannels, 
 		}
 		n = activenotes_next(n);
 	}
-
-	if (flip == 1)
+	if (nNotes > 0)
 		printf("\n");
 }

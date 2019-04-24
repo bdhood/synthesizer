@@ -6,11 +6,15 @@
 #pragma warning (disable : 4996)
 
 #define BORDER_WIDTH	1
-HBRUSH button_forecolor = CreateSolidBrush(RGB(220, 200, 20));
 
+HBRUSH button_forecolor;
 
-void button_mouse(HDC hdc, BUTTON *button, BUTTON_STATE state) {
+void button_init() { 
+	button_forecolor = CreateSolidBrush(RGB(220, 200, 20));
+}
 
+void button_mouse(HDC hdc, BUTTON *button) {
+	
 }
 
 void button_paint(HDC hdc, BUTTON *button) {

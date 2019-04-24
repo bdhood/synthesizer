@@ -1,6 +1,7 @@
 #include <Windows.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include "note.h"
 #include "keymap.h"
@@ -12,22 +13,24 @@
 #include "interface.h"
 
 HHOOK hHook;
+bool space_down = false;
 
 LRESULT keyboard_callback(int nCode, WPARAM wParam, LPARAM lParam) {
 
 	KBDLLHOOKSTRUCT *kb = (LPKBDLLHOOKSTRUCT )lParam;
 
 	RedrawWindow(interface_get_hwnd(), NULL, NULL, RDW_INVALIDATE);
+	
 
-	NOTE *n = keymap_get((unsigned char)kb->vkCode);
+	
+	NOTE *n = keymap_get(kb->vkCode);
 
 	if (wParam == WM_KEYDOWN) {
-		activekeys_add((unsigned char)kb->vkCode);
+		activekeys_add(kb->vkCode);
 		activenotes_add(n);
 	}
-
 	if (wParam == WM_KEYUP) {
-		activekeys_rm((unsigned char)kb->vkCode);
+		activekeys_rm(kb->vkCode);
 		activenotes_rm(n);
 	}
 
@@ -41,7 +44,7 @@ DWORD WINAPI keyboard_start(LPVOID lpParam) {
 	freqmap_load();
 	activekeys_load();
 	activenotes_load();
-	keymap_set_transpose(-4);
+	keymap_set_transpose(-6);
 	synth_on();
 	
 	hHook = SetWindowsHookEx(WH_KEYBOARD_LL, (HOOKPROC)keyboard_callback, GetModuleHandle(NULL), 0);

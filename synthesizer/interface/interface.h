@@ -3,7 +3,7 @@
 
 #include <Windows.h>
 
-DWORD WINAPI interface_load(LPVOID lpParam);
+DWORD WINAPI interface_start(LPVOID lpParam);
 HWND interface_get_hwnd();
 
 #endif
