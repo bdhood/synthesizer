@@ -1,4 +1,6 @@
-import json, os, sys, subprocess, objcache
+import json, os, sys, subprocess
+from . import objcache
+from functools import *
 
 class GCC_WRAPPER:
     src_files = []
@@ -14,17 +16,17 @@ class GCC_WRAPPER:
         failure = False
         while process.poll() == None:
             line = process.stderr.read()
-            if line != "":
-                print(line)
+            if len(line) != 0:
+                print(str(line).encode('utf8'))
                 failure = True
             line = process.stdout.read()
-            if line != "":
-                print(line)
+            if len(line) != 0:
+                print(str(line).encode('utf8'))
         if failure:
             exit(1)
 
     def invoke_gcc(self, output, define_arr, gcc_args=""):
-        cache = objcache.OBJ_CACHE()
+        cache = objcache.objcache()
         used_compiler = False
         for f in self.src_files: 
             f_obj = "obj/" + f.replace(".cpp", ".o").replace(".c", ".o")

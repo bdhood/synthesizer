@@ -42,3 +42,7 @@ int activekeys_get_total() {
 	}
 	return total;
 }
+
+bool activekeys_isactive(int i) {
+	return active_keys[i] == 1;
+}

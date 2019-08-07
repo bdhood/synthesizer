@@ -1,6 +1,6 @@
 import json, hashlib, os
 
-class OBJ_CACHE:
+class objcache:
     cache = []
     json_path = 'builder/cache.json'
 
@@ -16,7 +16,7 @@ class OBJ_CACHE:
             f.write(json.dumps(self.cache))
 
     def sha256(self, s):
-        return hashlib.sha256(s).hexdigest()
+        return hashlib.sha256(str(s).encode('utf-8')).hexdigest()
 
     def sha256_file(self, filename):
         with open(filename, 'rb') as f:

@@ -44,7 +44,7 @@ DWORD WINAPI keyboard_start(LPVOID lpParam) {
 	freqmap_load();
 	activekeys_load();
 	activenotes_load();
-	keymap_set_transpose(-6);
+	keymap_set_transpose(-5);
 	synth_on();
 	
 	hHook = SetWindowsHookEx(WH_KEYBOARD_LL, (HOOKPROC)keyboard_callback, GetModuleHandle(NULL), 0);

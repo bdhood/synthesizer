@@ -37,6 +37,7 @@ void keymap_set_transpose(int x) {
 void keymap_load() {
 	memset(keymap, 0, 0x100 * sizeof(NOTE));
 	// Lower Keyboard
+	ASSIGN(0xa0, 'a', 0, 2); // left shift
 	ASSIGN('Z', 'c', 0, 3);
 	ASSIGN('S', 'c', 1, 3);
 	ASSIGN('X', 'd', 0, 3);
@@ -55,23 +56,6 @@ void keymap_load() {
 	ASSIGN(0xba, 'd', 1, 4); // ;
 	ASSIGN(0xbf, 'e', 0, 4); // /
 	
-	ASSIGN('Z' + 0x100, 'c', 0, 3);
-	ASSIGN('S' + 0x100, 'c', 1, 3);
-	ASSIGN('X' + 0x100, 'd', 0, 3);
-	ASSIGN('D' + 0x100, 'd', 1, 3);
-	ASSIGN('C' + 0x100, 'e', 0, 3);
-	ASSIGN('V' + 0x100, 'f', 0, 3);
-	ASSIGN('G' + 0x100, 'f', 1, 3);
-	ASSIGN('B' + 0x100, 'g', 0, 3);
-	ASSIGN('H' + 0x100, 'g', 1, 3);
-	ASSIGN('N' + 0x100, 'a', 0, 3);
-	ASSIGN('J' + 0x100, 'a', 1, 3);
-	ASSIGN('M' + 0x100, 'b', 0, 3);
-	ASSIGN(0xbc + 0x100, 'c', 0, 4); // <
-	ASSIGN('L' + 0x100, 'c', 1, 4);
-	ASSIGN(0xbe + 0x100, 'd', 0, 4); // >
-	ASSIGN(0xba + 0x100, 'd', 1, 4); // ;
-	ASSIGN(0xbf + 0x100, 'e', 0, 4); // /
 	
 	// Upper Keyboard - lower octave
 	ASSIGN('Q', 'c', 0, 4);
@@ -97,29 +81,7 @@ void keymap_load() {
 	ASSIGN(0x08, 'a', 1, 5); // [Bksp]
 	ASSIGN(0xdc, 'a', 0, 5); // backslash
 	
-	// Upper Keyboard - upper octave
-	ASSIGN('Q' + 0x100, 'c', 0, 5);
-	ASSIGN('2' + 0x100, 'c', 1, 5);
-	ASSIGN('W' + 0x100, 'd', 0, 5);
-	ASSIGN('3' + 0x100, 'd', 1, 5);
-	ASSIGN('E' + 0x100, 'e', 0, 5);
-	ASSIGN('R' + 0x100, 'f', 0, 5);
-	ASSIGN('5' + 0x100, 'f', 1, 5);
-	ASSIGN('T' + 0x100, 'g', 0, 5);
-	ASSIGN('6' + 0x100, 'g', 1, 5);
-	ASSIGN('Y' + 0x100, 'a', 0, 5);
-	ASSIGN('7' + 0x100, 'a', 1, 5);
-	ASSIGN('U' + 0x100, 'b', 0, 5);
-	ASSIGN('I' + 0x100, 'c', 0, 6); 
-	ASSIGN('9' + 0x100, 'c', 1, 6);
-	ASSIGN('O' + 0x100, 'd', 0, 6);
-	ASSIGN('0' + 0x100, 'd', 1, 6);
-	ASSIGN('P' + 0x100, 'e', 0, 6); 
-	ASSIGN(0xdb + 0x100, 'f', 0, 6); // [
-	ASSIGN(0xbb + 0x100, 'f', 1, 6); // =
-	ASSIGN(0xdd + 0x100, 'g', 0, 6); // ]
-	ASSIGN(0x08 + 0x100, 'a', 1, 6); // [Bksp]
-	ASSIGN(0xdc + 0x100, 'a', 0, 6); // backslash
+
 }
 
 NOTE *keymap_get(int c) {

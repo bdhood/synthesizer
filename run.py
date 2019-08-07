@@ -36,6 +36,7 @@ if __name__ == "__main__":
         "synthesizer/interface/controls/label.c",
         "synthesizer/interface/controls/groupbox.c",
         "synthesizer/interface/controls/waveform.c",
+        "synthesizer/interface/controls/keyboard_ctrl.c",
         "synthesizer/keyboard/activekeys.c",
         "synthesizer/keyboard/activenotes.c",
         "synthesizer/keyboard/keyboard.c",
