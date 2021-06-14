@@ -1,0 +1,18 @@
+{
+    "Sample Rate": 96000,
+    "Frames Per Buffer": 2048,
+    "Transpose": 0,
+    "Target FPS": 144,
+    "Keymap File": "layouts/US-standard.json",
+    "Font": "fonts/Segoe UI-Light.ttf",
+    "Theme": {
+        "background": "images/background.bmp",
+        "font": "",
+        "waveform_channel1_color": "",
+        "waveform_channel2_color": "",
+        "key_bg_high": "",
+        "key_bg_low": "",
+        "key_bg_inactive": "",
+        "key_trim": ""
+    }
+}

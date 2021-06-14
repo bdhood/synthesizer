@@ -1,0 +1,1 @@
+# empty file to satisfy SDL_ttf/CMakeLists.txt
