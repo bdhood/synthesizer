@@ -295,7 +295,7 @@ function(add_resource filename resource_name)
     string(REGEX REPLACE "(${column_pattern})" "\t\"\\1\"\n" content "${hex_content}")
     string(REGEX REPLACE "([0-9a-f][0-9a-f])" "\\\\x\\1" content "${content}")
     string(REGEX REPLACE "\n\\\\" "\n\t\"\\\\" content "${content}\"")
-    set(source "int ${resource_name}_length = ${data_length};\nconst unsigned char *${resource_name} = \n${content};\n\n")
+    set(source "int ${resource_name}_length = ${data_length};\nunsigned char *${resource_name} = \n${content};\n\n")
     file(APPEND "src/settings/resources.h" "${source}")
 endfunction()
 
