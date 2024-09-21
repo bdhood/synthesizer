@@ -13,7 +13,6 @@ typedef struct WINDOW {
     bool abort;
     bool break_mainloop;
     float target_fps;
-    double clock;
 } WINDOW;
 
 WINDOW *window_init(char *title, int width, int height);

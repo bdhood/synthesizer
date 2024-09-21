@@ -67,7 +67,6 @@ void window_mainloop(WINDOW *window, void (*event)(SDL_Event*), void (*render)()
         double deltaTime = ((double)currentTicks - (double)window->lastTick) / 1000.f;
 
         if (deltaTime + remainder > targetHz) {
-            window->clock += deltaTime;
             update(deltaTime);
             window->lastTick = currentTicks;
             remainder += deltaTime - targetHz;

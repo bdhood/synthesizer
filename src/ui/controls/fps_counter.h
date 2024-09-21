@@ -8,7 +8,6 @@ typedef struct FPS_COUNTER {
     LABEL *label;
     double timeSinceUpdate;
     int nFrames;
-    int nFramesPrev;
     char *fpsBuffer;
 } FPS_COUNTER;
 
