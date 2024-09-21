@@ -46,6 +46,7 @@ SETTINGS* settings_load(char *filename) {
             settings->frames_per_buffer = i->valueint;
         }
         if (strcmp(i->string, "Transpose") == 0) {
+            printf("transpose: %d\n", i->valueint);
             settings->transpose = i->valueint;
         }
         if (strcmp(i->string, "Keymap File") == 0) {

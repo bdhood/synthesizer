@@ -36,11 +36,11 @@ void normalizer_callback(unsigned long framesPerBuffer,  int nChannels, float *o
 
 	unsigned long i, channel;
 
-	for (channel = 0; channel < 2; channel++) {
+	for (channel = 0; channel < nChannels; channel++) {
 
 		float max = 0.0f;
 
-		for (i = channel; i < framesPerBuffer * nChannels; i += 2) {
+		for (i = channel; i < framesPerBuffer * nChannels; i += nChannels) {
 			if (max < __abs(out[i]))
 				max = __abs(out[i]);
 		}
@@ -48,7 +48,7 @@ void normalizer_callback(unsigned long framesPerBuffer,  int nChannels, float *o
 		if (max == 0.0f)
 			break;
 
-		for (i = channel; i < framesPerBuffer * nChannels; i += 2) {
+		for (i = channel; i < framesPerBuffer * nChannels; i += nChannels) {
 			out[i] /= max;
 			out[i] *= amplitude;
 		}

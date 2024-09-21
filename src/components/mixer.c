@@ -13,7 +13,7 @@
 #include "normalizer.h"
 #include "mixer.h"
 
-int instrument = 2;
+int instrument = 0;
 
 const char *instruments[] = {
 	"Sine",

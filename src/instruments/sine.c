@@ -14,8 +14,6 @@
 
 #define VOICES 16
 
-int n; // location in sine wave
-
 float voice_locations[VOICES];
 
 void sine_initialize() {
@@ -40,12 +38,6 @@ void sine_callback(unsigned long framesPerBuffer, int sampleRate, int nChannels,
 			continue;
 
 		flip = 1;
-		if (n->sharp == 0) {
-			printf("%c%d ", n->note, n->octave);
-		}
-		else {
-			printf("%c#%d ", n->note, n->octave);
-		}
 		float freq = freqmap_get(n);
 
 		for (unsigned long i = 0; i < framesPerBuffer; i++) {
