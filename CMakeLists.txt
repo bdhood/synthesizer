@@ -3,20 +3,16 @@ cmake_policy(SET CMP0054 NEW)
 
 include(ExternalProject)
 
+find_package(PkgConfig REQUIRED)
+
 message(${CMAKE_SOURCE_DIR})
 message(${CMAKE_BINARY_DIR})
 if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
   message(FATAL_ERROR "Prevented in-tree built. Please create a build directory outside of the source and call cmake from there")
 endif()
 
-function(get_source URL FILENAME HASH)
+function(get_source URL FILENAME)
     set(DEST "${CMAKE_SOURCE_DIR}/libraries/${FILENAME}")
-    if(EXISTS ${DEST}) 
-        file(SHA256 ${DEST} HASH_VALUE)
-        if (NOT ${HASH} STREQUAL ${HASH_VALUE})
-            file(REMOVE ${DEST})
-        endif()
-    endif()
     if(NOT EXISTS ${DEST})
         file(
             DOWNLOAD
@@ -26,12 +22,6 @@ function(get_source URL FILENAME HASH)
             TLS_VERIFY ON
             SHOW_PROGRESS
         )
-    endif()
-    if(EXISTS ${DEST}) 
-        file(SHA256 ${DEST} HASH_VALUE)
-        if (NOT ${HASH} STREQUAL ${HASH_VALUE})
-            file(REMOVE ${DEST})
-        endif()
     endif()
     file(ARCHIVE_EXTRACT INPUT ${DEST})
 endfunction()
@@ -45,32 +35,33 @@ if (MSVC)
     list(APPEND EXTRA_LIBS vcruntime)
 endif()
 
+set(SDL2_VERSION "2.30.7")
+set(SDL2_ttf_VERSION "2.22.0")
+set(portaudio_VERSION "v190700_20210406")
+set(zlib_VERSION "1.3.1")
+set(cJSON_VERSION "1.7.18")
+
 include_directories(
     ${CMAKE_BINARY_DIR}/asiosdk_2.3.3_2019-06-14/common
     ${CMAKE_BINARY_DIR}/asiosdk_2.3.3_2019-06-14/host
     ${CMAKE_BINARY_DIR}/portaudio/include
     ${CMAKE_BINARY_DIR}/portaudio/src/common
     ${CMAKE_BINARY_DIR}/portaudio/src/os/win
-    ${CMAKE_BINARY_DIR}/build/SDL2-2.0.12/include
-    ${CMAKE_BINARY_DIR}/SDL2-2.0.12/include
-    ${CMAKE_BINARY_DIR}/SDL2_ttf-2.0.15
-    ${CMAKE_BINARY_DIR}/DaveGamble-cJSON-39853e5
+    ${CMAKE_BINARY_DIR}/build/SDL2-${SDL2_VERSION}/include/SDL2
+    ${CMAKE_BINARY_DIR}/SDL2_ttf-${SDL2_ttf_VERSION}
+    ${CMAKE_BINARY_DIR}/cJSON-${cJSON_VERSION}
 )
 
 # asiosdk2
 # https://www.steinberg.net/en/home.html
-
 get_source(
     https://www.steinberg.net/asiosdk 
     asiosdk2.zip 
-    1e044e26c3ce275ee08007d524e97ef5ab36e3aa5efbcb1e44844542d7c13ab2
 )
 
 # portaudio
 # http://www.portaudio.com/
-
-set(portaudio_VERSION "v190600_20161030")
-
+set(PA_DISABLE_INSTALL ON)
 set(PA_USE_DS OFF CACHE INTERNAL "direct sound")
 set(PA_USE_WMME OFF CACHE INTERNAL "wmme")
 set(PA_USE_WASAPI OFF CACHE INTERNAL "wasapi")
@@ -78,9 +69,8 @@ set(PA_USE_WDMKS OFF CACHE INTERNAL "wdks")
 set(PA_USE_ASIO ON CACHE INTERNAL "asio")
 
 get_source(
-    http://www.portaudio.com/archives/pa_stable_${portaudio_VERSION}.tgz
+    https://files.portaudio.com/archives/pa_stable_${portaudio_VERSION}.tgz
     pa_stable_${portaudio_VERSION}.tgz
-    f5a21d7dcd6ee84397446fa1fa1a0675bb2e8a4a6dceb4305a8404698d8d1513
 )
 
 add_subdirectory(${CMAKE_BINARY_DIR}/portaudio EXCLUDE_FROM_ALL)
@@ -89,24 +79,22 @@ add_subdirectory(${CMAKE_BINARY_DIR}/portaudio EXCLUDE_FROM_ALL)
 # https://github.com/DaveGamble/cJSON
 
 get_source(
-    https://github.com/DaveGamble/cJSON/tarball/v1.7.13
-    DaveGamble-cJSON-v1.7.13-0-g39853e5.tar.gz
-    0901b563429fde89709df13be8dbd69c8c3c736edb0a931590c730f3fa8c9c6e
+    https://github.com/DaveGamble/cJSON/archive/refs/tags/v${cJSON_VERSION}.tar.gz
+    cJSON-v${cJSON_VERSION}.tar.gz
 )
 set(ENABLE_CJSON_TEST OFF CACHE INTERNAL "cJSON tests")
-add_subdirectory(${CMAKE_BINARY_DIR}/DaveGamble-cJSON-39853e5)
+set(ENABLE_CJSON_UNINSTALL OFF CACHE INTERNAL "cJSON uninstall")
+add_subdirectory(${CMAKE_BINARY_DIR}/cJSON-${cJSON_VERSION})
 
 # SDL2
 # https://www.libsdl.org/
 
-set(SDL2_VERSION "2.0.12")
 set(SDL_STATIC ON CACHE INTERNAL "build static")
 set(SDL2_INCLUDE_DIRS ${SDL2_INCLUDE_DIR})
 set(SDL2_LIBRARIES ${SDL2MAIN_LIBRARY} ${SDL2_LIBRARY})
 get_source(
     http://www.libsdl.org/release/SDL2-${SDL2_VERSION}.tar.gz
     SDL2-${SDL2_VERSION}.tar.gz
-    349268f695c02efbc9b9148a70b85e58cefbbf704abd3e91be654db7f1e2c863
 )
 
 add_subdirectory(${CMAKE_BINARY_DIR}/SDL2-${SDL2_VERSION})
@@ -114,40 +102,34 @@ add_subdirectory(${CMAKE_BINARY_DIR}/SDL2-${SDL2_VERSION})
 # freetype
 # https://www.freetype.org/index.html
 
-set(Freetype_VERSION "2.10.2")
-set(FREETYPE_LIBRARY ${CMAKE_BINARY_DIR}/freetype-${Freetype_VERSION})
-get_source(
-    https://download.savannah.gnu.org/releases/freetype/freetype-${Freetype_VERSION}.tar.gz
-    freetype-${Freetype_VERSION}.tar.gz
-    e09aa914e4f7a5d723ac381420949c55c0b90b15744adce5d1406046022186ab
-)
+# set(Freetype_VERSION "2.13.2")
+# set(FREETYPE_LIBRARY ${CMAKE_BINARY_DIR}/freetype-${Freetype_VERSION})
+# get_source(
+#     https://download.savannah.gnu.org/releases/freetype/freetype-${Freetype_VERSION}.tar.gz
+#     freetype-${Freetype_VERSION}.tar.gz
+# )
 
-add_subdirectory(${CMAKE_BINARY_DIR}/freetype-${Freetype_VERSION})
-unset(Z_HAVE_UNISTD_H)
+# add_subdirectory(${CMAKE_BINARY_DIR}/freetype-${Freetype_VERSION})
+# unset(Z_HAVE_UNISTD_H)
 
 # SDL2_ttf
-# https://www.libsdl.org/projects/SDL_ttf/
-
-set(SDL2_ttf_VERSION "2.0.15")
+# https://github.com/libsdl-org/SDL_ttf
 get_source(
     https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-${SDL2_ttf_VERSION}.tar.gz
     SDL2_ttf-${SDL2_ttf_VERSION}.tar.gz
-    a9eceb1ad88c1f1545cd7bd28e7cbc0b2c14191d40238f531a15b01b1b22cd33
 )
 
-add_library(SDL2::SDL2 ALIAS SDL2-static)
-add_library(Freetype::Freetype ALIAS freetype)
+# add_library(SDL2::SDL2 ALIAS SDL2-static)
+# add_library(Freetype::Freetype ALIAS freetype)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/sdl2)
 add_subdirectory(${CMAKE_BINARY_DIR}/SDL2_ttf-${SDL2_ttf_VERSION})
 
 # zlib
 # http://zlib.net
 
-set(zlib_VERSION "1.2.11")
 get_source(
-    http://www.zlib.net/zlib-${zlib_VERSION}.tar.gz
+    https://www.zlib.net/zlib-${zlib_VERSION}.tar.gz
     zlib-${zlib_VERSION}.tar.gz
-    c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1
 )
 
 add_subdirectory(${CMAKE_BINARY_DIR}/zlib-${zlib_VERSION})

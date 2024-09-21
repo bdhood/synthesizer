@@ -1,3 +1,4 @@
 build/
 src/settings/resources.h
 .vscode/
+libraries/
