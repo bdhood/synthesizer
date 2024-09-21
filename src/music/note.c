@@ -36,6 +36,10 @@ void note_from_string(NOTE* n, char* str) {
 }
 
 int note_to_int(NOTE *n) {
+	if (n->sharp >= 2 || n->octave > 8 || n->sharp < 0 || n->octave < 0) {
+		printf("invalid note");
+		exit(1);
+	}
 	int value = n->octave * 12;
 	switch (n->note) {
 	case 'c':
