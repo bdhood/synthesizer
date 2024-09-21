@@ -8,6 +8,6 @@
 void keymap_load(cJSON *keys_root);
 NOTE *keymap_get(int c);
 int keymap_get_transpose();
-void keymap_set_transpose(int x);
+void keymap_add_transpose(int x);
 
 #endif

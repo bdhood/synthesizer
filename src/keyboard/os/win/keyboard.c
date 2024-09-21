@@ -42,7 +42,7 @@ void keyboard_start(SETTINGS *settings) {
 	freqmap_load();
 	activekeys_load();
 	activenotes_load();
-	keymap_set_transpose(settings->transpose);
+	keymap_add_transpose(settings->transpose);
 	synth_on();
 	
 	hHook = SetWindowsHookEx(WH_KEYBOARD_LL, (HOOKPROC)keyboard_callback, GetModuleHandle(NULL), 0);

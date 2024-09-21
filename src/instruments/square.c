@@ -38,12 +38,6 @@ void square_callback(unsigned long framesPerBuffer, int sampleRate, int nChannel
 			continue;
 
 		flip = 1;
-		if (n->sharp == 0) {
-			printf("%c%d ", n->note, n->octave);
-		}
-		else {
-			printf("%c#%d ", n->note, n->octave);
-		}
 		for (int k = 0; k < 1; k++) {
 			n2.note = n->note;
 			n2.octave = n->octave + k;
@@ -72,9 +66,5 @@ void square_callback(unsigned long framesPerBuffer, int sampleRate, int nChannel
 			voice++;
 			voice %= VOICES;
 		}
-	}
-
-	if (flip == 1) {
-		printf("\n");
 	}
 }

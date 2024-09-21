@@ -17,7 +17,6 @@ void keyboard_start() {
 	freqmap_load();
 	activekeys_load();
 	activenotes_load();
-	keymap_set_transpose(0);
 }
 
 void keyboard_event(SDL_Event* e) {
